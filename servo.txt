@@ -1,0 +1,117 @@
+#include <Servo.h>
+Servo myservo;
+int red = 0;
+int green = 0;
+int blue = 0;
+int color1, color2;
+int sensorValue;
+int MAXANGLE = 163;
+int MIDANGLE = 82;
+int MINANGLE = 0;
+int angle = MIDANGLE;
+int WAIT = 100;
+int PUSHWAIT = 1000;
+int releaseTime;
+boolean up;
+boolean button1;
+boolean button2;
+boolean pushing;
+void setup() {
+  pinMode(7, INPUT);
+  pinMode(8, INPUT);
+  Serial.begin(9600);
+  button1 = false;
+  button2 = false;
+  myservo.attach(9);
+  myservo.write(angle);
+  pushing = false;
+  releaseTime = 0;
+}
+void loop() {
+  sensorValue = analogRead(0);
+  button1 = digitalRead(7);
+  button2 = digitalRead(8);
+  color1 = map(sensorValue, 0, 400, 0, 255);
+  color2 = map(sensorValue, 0, 400, 255, 0);
+  if (button1==HIGH && button2==HIGH) { // button 2 is pressed
+    red = 0;
+    green = color1;
+    blue = 0;
+    /*if (!(millis() % WAIT)) angle += 1;
+     angle = min(179, angle);*/
+    if (!pushing) {
+      pushing = true;
+      releaseTime = millis() + PUSHWAIT;
+    } 
+    else {
+      if (releaseTime > 0) {
+        if (millis() < releaseTime) {
+          if (angle != MAXANGLE) {
+            angle = MAXANGLE;
+          }
+        } 
+        else {
+          if (angle != MIDANGLE) angle = MIDANGLE;
+          releaseTime = 0;
+        }
+      }
+    }
+    myservo.write(angle);
+  } 
+  else if (button1==LOW && button2==HIGH) { // Both buttons are pushed
+    if (pushing) pushing = false;
+    releaseTime = 0;
+    red = 0;
+    green = color1;
+    blue = color2;
+    if (angle != MIDANGLE) angle = MIDANGLE;
+    myservo.write(angle);
+  } 
+  else if (button1==HIGH && button2==LOW) { // Buttons are released
+    if (pushing) pushing = false;
+    releaseTime = 0;
+    red = 0;
+    green = 0;
+    blue = color1;
+    if (angle != MIDANGLE) angle = MIDANGLE;
+    myservo.write(angle);
+  } 
+  else if (button1==LOW && button2==LOW) { // button 1 is pressed
+    red = color1;
+    green = 0;
+    blue = 0;
+    /*if (!(millis() % WAIT)) angle -= 1;
+     angle = max(0, angle);*/
+    if (!pushing) {
+      pushing = true;
+      releaseTime = millis() + PUSHWAIT;
+    } 
+    else {
+      if (releaseTime > 0) {
+        if (millis() < releaseTime) {
+          if (angle != MINANGLE) {
+            angle = MINANGLE;
+          }
+        } 
+        else {
+          if (angle != MIDANGLE) angle = MIDANGLE;
+          releaseTime = 0;
+        }
+      }
+    }
+    myservo.write(angle);
+  }
+  analogWrite(3, red);
+  analogWrite(5, green);
+  analogWrite(6, blue );
+  if (!(millis() % 2500)) {
+    Serial.println(millis());
+    Serial.println(pushing);
+    /*Serial.println(button1);
+     Serial.println(button2);
+     Serial.println("---");*/
+  }
+}
+
+
+
