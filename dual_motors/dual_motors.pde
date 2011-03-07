@@ -41,7 +41,7 @@ void loop () {
   if (!lock2) {
     if (button1==LOW) { // button 1 is pressed
       if (!pushing1) {
-        //Serial.println(1);
+        Serial.println(1);
         lock1 = true;
         pushing1 = true;
         releaseTime1 = millis() + PUSHWAIT;
@@ -69,7 +69,7 @@ void loop () {
   if (!lock1) {
     if (button2==LOW) { // button 2 is pressed
       if (!pushing2) {
-        //Serial.println(2);
+        Serial.println(2);
         lock2 = true;
         pushing2 = true;
         releaseTime2 = millis() + PUSHWAIT;
