@@ -1,1 +1,8 @@
 Our project for the Embedded Interaction Workshop course with Michael Fox, at the HK PolyU School of Design (MDes Interaction 2011).
+
+How-to
+------
+1. Start the VLC streams of the two webcams (/dev/video0 and /dev/video1).
+2. Plug in the Arduino boards in order. Each will become accessible at /dev/ttyUSBx where x is the order it was plugged in, starting at x=0 (/dev/ttyUSB0 is the first).
+3. Make the Arduinos (/dev/ttyUSBx) write to the named pipes which will control the video squares.
+4. Run ./twelveVideos.sh
