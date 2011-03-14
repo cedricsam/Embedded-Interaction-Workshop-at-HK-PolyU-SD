@@ -2,7 +2,7 @@ Our project for the Embedded Interaction Workshop course with Michael Fox, at th
 
 How-to
 ------
-1. Start the VLC streams of the two webcams (/dev/video0 and /dev/video1).
+1. Start the VLC streams of the two webcams (/dev/video0 and /dev/video1). Encode in WMV format (only that seems to work for webcams) and output to HTTP, port 8080 and 8082 respectively, at /stream.
 2. Plug in the Arduino boards in order. Each will become accessible at /dev/ttyUSBx where x is the order it was plugged in, starting at x=0 (/dev/ttyUSB0 is the first).
-3. Make the Arduinos (/dev/ttyUSBx) write to the named pipes which will control the video squares.
-4. Run ./twelveVideos.sh
+3. Make the Arduinos (/dev/ttyUSBx) write to the named pipes which will control the video squares, using arduino2mplayer.sh.
+4. Run ./twelveVideos.sh to start the videos with MPlayer in slave mode.
